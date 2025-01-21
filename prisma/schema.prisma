@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int         @id @default(autoincrement())
+  username        String      @unique
+  name            String?
+  password        String
+  joinDate        DateTime    @default(now())
+  jumlahLogin     Int         @default(0)
+  unitId          Int       
+  unit            Unit        @relation(fields: [unitId], references: [id])
+  positions       Position[]  @relation("PositionOnUsers") 
+  logins          Login[]   // Relasi one-to-many ke tabel Login
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Unit {
+  id          Int       @id @default(autoincrement())
+  name        String?   @unique
+  users       User[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt     
+}
+
+model Position {
+  id          Int     @id @default(autoincrement())
+  name        String? @unique  
+  // userId      Int
+  users       User[]  @relation("PositionOnUsers")
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+
+model Login {
+  id        Int      @id @default(autoincrement())
+  userId    Int      // Foreign key ke User
+  user      User     @relation(fields: [userId], references: [id])
+  timestamp DateTime @default(now()) // Waktu login
+}
