@@ -11,7 +11,7 @@ $ npm install
 ```
 
 ## Compile and run the project
-
+Start the development server on http://localhost:3000:
 ```bash
 # development
 $ npm run start
@@ -22,6 +22,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
 
 ## How to run migrate / seeder
 ```bash
